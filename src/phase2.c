@@ -242,9 +242,10 @@ static void do_params(unsigned initramfs_len,
 	if (this_kernel->commandline_append)
 		cmdline += strlen(strcpy(cmdline,
 				      this_kernel->commandline_append));
-		if (commandline_rootfs_append[0])
-			cmdline += strlen(strcpy(cmdline,
-				      commandline_rootfs_append));
+	if (commandline_rootfs_append[0])
+		cmdline += strlen(strcpy(cmdline,
+				  commandline_rootfs_append));
+
 
 	/* deal with any trailing newlines that hitched a ride */
 
