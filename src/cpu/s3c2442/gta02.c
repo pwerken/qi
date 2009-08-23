@@ -560,23 +560,6 @@ void post_serial_init_gta02(void)
 }
 
 /*
- * Increment a hexadecimal digit represented by a char and
- * return 1 if an overflow occured.
- */
-static char inc_hexchar(char * p)
-{
-	if (*p == '9')
-		*p = 'A';
-	else if (*p != 'F')
-		(*p)++;
-	else {
-		*p = '0';
-		return 1;
-	}
-	return 0;
-}
-
-/*
  * create and append device-specific Linux kernel commandline
  *
  * This takes care of legacy dyanmic partition sizing and USB Ethernet
@@ -586,10 +569,6 @@ static char inc_hexchar(char * p)
 char * append_device_specific_cmdline_gta02(char * cmdline)
 {
 	int n = 0;
-	int i;
-	int len;
-	static char mac[64];
-	struct kernel_source const * real_kernel = this_kernel;
 
 	/*
 	 * dynparts computation
@@ -614,57 +593,6 @@ char * append_device_specific_cmdline_gta02(char * cmdline)
 			*cmdline++ = ',';
 
 	}
-
-	*cmdline = '\0';
-
-	/*
-	 * Identity
-	 */
-
-	/* position ourselves at true start of GTA02 identity partition */
-	partition_offset_blocks = nand_dynparts[4].true_offset;
-	partition_length_blocks = 0x40000 / 512;
-
-	/*
-	 * lie that we are in NAND context... GTA02 specific
-	 * all filesystem access is completed before we are called
-	 */
-	this_kernel = &board_api_gta02.kernel_source[KERNEL_SOURCE_NAND_INDEX];
-
-	if (!ext2fs_mount()) {
-		puts("Unable to mount ext2 filesystem\n");
-		goto bail;
-	}
-
-	len = ext2fs_open("usb");
-	if (len < 0) {
-		puts(" Open failed\n");
-		goto bail;
-	}
-
-	n = ext2fs_read(mac, sizeof(mac));
-	if (n < 0) {
-		puts(" Read failed\n");
-		goto bail;
-	}
-
-	mac[len] = '\0';
-
-	cmdline += strlen(strcpy(cmdline, " g_ether.dev_addr="));
-	cmdline += strlen(strcpy(cmdline, &mac[2]));
-
-	for (i = 0; i != 10; i++) {
-		if ((i % 3) == 2)
-			continue;
-		if (!inc_hexchar(mac + 18 - i))
-			break; /* Carry not needed. */
-	}
-
-	cmdline += strlen(strcpy(cmdline, " g_ether.host_addr="));
-	cmdline += strlen(strcpy(cmdline, &mac[2]));
-	*cmdline++ = ' ' ;
-bail:
-	this_kernel = real_kernel;
 
 	*cmdline = '\0';
 
