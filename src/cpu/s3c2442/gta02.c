@@ -61,10 +61,10 @@ struct nand_dynparts {
 
 static struct nand_dynparts nand_dynparts[] = {
 	{ "qi",            0x40000 },
-	{ "depr-ub-env",   0x40000 },
+	{ "u-boot_env" ,   0x40000 },
 	{ "kernel",       0x800000 },
-	{ "depr",          0xa0000 },
-	{ "identity-ext2", 0x40000 },
+	{ "splash",        0xa0000 },
+	{ "factory",       0x40000 },
 	{ "rootfs",              0 },
 };
 
