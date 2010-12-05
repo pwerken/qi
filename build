@@ -1,5 +1,10 @@
 #!/bin/sh
 
+. /usr/local/openmoko/arm/setup-env
+
+export ARCH=arm
+export CROSS_COMPILE="arm-angstrom-linux-gnueabi-"
+
 make clean && \
 make CPU=s3c6410 && \
 make CPU=s3c2442 && \
