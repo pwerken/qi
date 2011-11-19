@@ -691,7 +691,7 @@ const struct board_api board_api_gta02 = {
 	.get_ui_keys = get_ui_keys_gta02,
 	.get_ui_debug = get_ui_debug_gta02,
 	.set_ui_indication = set_ui_indication_gta02,
-	.commandline_board = "loglevel=4 "
+	.commandline_board =
 				      "console=tty0 "
 				      "console=ttySAC2,115200 "
 				      "init=/sbin/init "
@@ -709,7 +709,7 @@ const struct board_api board_api_gta02 = {
 			.filesystem = FS_EXT2,
 			.filepath = "boot/uImage-GTA02.bin",
 			.initramfs_filepath = "boot/initrd-GTA02.bin",
-			.commandline_append = " root=/dev/mmcblk0p1 rootdelay=1 ",
+			.commandline_append = "",
 		},
 		[1] = {
 			.name = "SD Card EXT2 P1 Kernel",
@@ -719,7 +719,7 @@ const struct board_api board_api_gta02 = {
 			.filesystem = FS_EXT2,
 			.filepath = "boot/uImage-GTA02.bin.2",
 			.initramfs_filepath = "boot/initrd-GTA02.bin.2",
-			.commandline_append = " root=/dev/mmcblk0p1 rootdelay=1 ",
+			.commandline_append = "",
 		},
 		[2] = {
 			.name = "SD Card EXT2 P2 Kernel",
@@ -729,7 +729,7 @@ const struct board_api board_api_gta02 = {
 			.filesystem = FS_EXT2,
 			.filepath = "boot/uImage-GTA02.bin",
 			.initramfs_filepath = "boot/initrd-GTA02.bin",
-			.commandline_append = " root=/dev/mmcblk0p2 rootdelay=1 ",
+			.commandline_append = "",
 		},
 		[3] = {
 			.name = "SD Card EXT2 P3 Kernel",
@@ -739,7 +739,7 @@ const struct board_api board_api_gta02 = {
 			.filesystem = FS_EXT2,
 			.filepath = "boot/uImage-GTA02.bin",
 			.initramfs_filepath = "boot/initrd-GTA02.bin",
-			.commandline_append = " root=/dev/mmcblk0p3 rootdelay=1 ",
+			.commandline_append = "",
 		},
 		[KERNEL_SOURCE_NAND_INDEX] = {
 			.name = "NAND Kernel",
@@ -747,7 +747,8 @@ const struct board_api board_api_gta02 = {
 			/* NOTE offset below is replaced at runtime */
 			.offset_blocks512_if_no_partition = 0x80000 / 512,
 			.filesystem = FS_RAW,
-			.commandline_append = " rootfstype=ubifs " \
+			.commandline_append = " loglevel=4 " \
+					      " rootfstype=ubifs " \
 					      " ubi.mtd=6,2048 " \
 					      " root=ubi0:om-gta02-rootfs ",
 		},
